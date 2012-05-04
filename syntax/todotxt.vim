@@ -31,7 +31,7 @@ hi link isDate Type
 setlocal cursorline
 
 
-" [n]ext
+" [n]ext task
 nmap <buffer> <localleader>n /^[^x]
 " [d]one task
 nmap <silent> <buffer> <localleader>d I=strftime("x %Y-%m-%d ")<localleader>n
@@ -43,6 +43,12 @@ nmap <buffer> <localleader>h :exe printf('match Error /+\<%s\>/', expand('<cword
 nmap <buffer> <localleader>p I( ) hhr
 " de[P]rioritise task
 nmap <buffer> <localleader>P :s/^(.) //
+" [t]ick daily task
+nmap <buffer> <localleader>t A.:silent! s/\(\.\.\.\.\)\.$/\1:/
+" clear [T]icker
+nmap <buffer> <localleader>T :silent! s/\( (\d*) \)\?\([.:]*\)$/\=" (" . strlen(submatch(2)) . ") " /
+
+
 
 " next [m]arked
 " nmap <buffer> <localleader>m /^[^=\-# \t].*\*$
