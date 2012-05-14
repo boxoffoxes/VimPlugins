@@ -40,9 +40,9 @@ setlocal foldopen=block,hor,mark,percent,quickfix,tag,undo
 " [n]ext task
 nmap <buffer> <localleader>n /^[^x]
 " [D]o-and-re-add task
-nmap <silent> <buffer> <localleader>D yyI=strftime("x %Y-%m-%d ")Gp``<localleader>n
+nmap <silent> <buffer> <localleader>D yy<localleader>PI=strftime("x %Y-%m-%d ")Gp``<localleader>n
 " [d]one task
-nmap <silent> <buffer> <localleader>d I=strftime("x %Y-%m-%d ")<localleader>n
+nmap <silent> <buffer> <localleader>d <localleader>PI=strftime("x %Y-%m-%d ")<localleader>n
 " [a]dd new task
 nmap <buffer> <localleader>a Go
 " [h]ighlight project under cursor

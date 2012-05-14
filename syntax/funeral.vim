@@ -10,13 +10,12 @@ syn region String start='"' end='"'
 syn region bqStr start='`' end='`' contains=String
 
 syn match Comment /--.*/
-syn match def /\S*\s*=/ contains=id
 syn match quoted /'\S*/
 syn match quoted /[\[\]]/ 
 syn match Character /\../
 
 syn keyword Special def True False
-syn keyword Conditional ifte doif and or
+syn keyword Conditional ifte doif and or TEST
 
 hi link ref Type
 hi link quoted Type
