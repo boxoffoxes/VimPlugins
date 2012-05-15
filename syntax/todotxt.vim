@@ -50,7 +50,7 @@ nmap <buffer> <localleader>h :exe printf('match Error /+\<%s\>/', expand('<cword
 " [p]rioritise task
 nmap <buffer> <localleader>p I( ) hhr
 " de[P]rioritise task
-nmap <buffer> <localleader>P :s/^(.) //
+nmap <buffer> <localleader>P :silent! s/^(.) //
 " [t]ick ongoing task
 nmap <buffer> <localleader>t A.:silent! s/\(\.\.\.\.\)\.$/\1:/
 " clear [T]icker

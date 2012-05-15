@@ -10,6 +10,7 @@ syn region String start='"' end='"'
 syn region bqStr start='`' end='`' contains=String
 
 syn match Comment /--.*/
+"syn match quoted /'"[^"]*"/
 syn match quoted /'\S*/
 syn match quoted /[\[\]]/ 
 syn match Character /\../
