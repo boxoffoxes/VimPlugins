@@ -14,6 +14,7 @@ syn match Comment /--.*/
 syn match quoted /'\S*/
 syn match quoted /[\[\]]/ 
 syn match Character /\../
+syn match invisibleChar /\.[\t ]/
 
 syn keyword Special def True False
 syn keyword Conditional ifte doif and or TEST
@@ -21,6 +22,7 @@ syn keyword Conditional ifte doif and or TEST
 hi link ref Type
 hi link quoted Type
 hi link bqStr PreProc
+hi link invisibleChar Todo
 
 "hi hasPriW ctermfg=darkgrey cterm=bold guifg=darkgrey
 
