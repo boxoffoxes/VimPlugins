@@ -5,8 +5,8 @@ syn spell toplevel
 syn case ignore
 syn sync linebreaks=1
 
-syn match projectName /^\S.*$/ contains=isTag,isDate,pendingWhat
-syn match isDone	/^\s*[-] .*$/ contains=isDate,isTag
+syn match projectName /^\S.*$/ contains=isTag,isDate,pendingWhat,wedge
+syn match isDone	/^\s*- .*$/ contains=isDate,isTag,doneMark
 syn match isPending /^\s*?.*/ contains=isTag,pendingWhat
 syn match Comment /^\s*#.*$/  contains=isTag
 syn match nextAction /^\s*>.*/ contains=isTag
@@ -14,19 +14,26 @@ syn match nextAction /^\s*>.*/ contains=isTag
 syn match isDate    /\d\d\d\d-\d\d-\d\d/
 syn match isTag /+\S\S*/
 syn match pendingWhat /?\S\S*/ contains=questionMark
-syn match questionMark /?/ contained
 
-syn region projectFold start="^\S" skip="^\s\s*" end="^" fold transparent keepend
+syn match questionMark /?/ contained
+syn match wedge /@$/ contained
+syn match doneMark /^\s*-/ contained
+
+syn region projectFold start="^\S.*[^@]$" skip="^\s\s*" end="^" fold transparent keepend
 syn region doneFold start="^\s\s*-\s" skip="^\s\s*-\s" end="^" fold transparent
 
 hi projectName cterm=bold gui=bold
 hi isPending ctermfg=darkgrey cterm=bold guifg=darkgrey
 hi isDone ctermfg=darkgrey guifg=grey
 hi link questionMark isPending
-hi link isTag Identifier
-hi link nextAction PreProc
-hi link isDate Type
+hi link isTag Type
+hi link nextAction Constant
+hi link isDate Special
+hi link doneMark Special
 hi link pendingWhat Statement
+hi link wedge PreProc
+
+hi! link Folded PreProc
 
 function! BrainFoldText()
 	let l = getline(v:foldstart)
@@ -46,4 +53,5 @@ nmap <buffer> <localleader>n I> dd?^\Sp
 nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
 " [d]o task
 nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")dd?^\S/^\S\\|^$P
-
+" toggle always [o]pen fold
+"nmap <silent><buffer> <localleader>
