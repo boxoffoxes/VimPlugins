@@ -41,17 +41,20 @@ function! BrainFoldText()
 endfunction
 
 setlocal foldmethod=syntax
-"setlocal foldnestmax=2
+setlocal foldnestmax=2
 "setlocal foldexpr=getline(v:lnum)[0]=~'\\s'
-"setlocal foldminlines=3
+setlocal foldminlines=3
 setlocal foldopen=block,hor,mark,percent,quickfix,tag,undo
 setlocal foldtext=BrainFoldText()
 
-" Set [n]ext action
-nmap <buffer> <localleader>n I> dd?^\Sp
+" Toggle [n]ext action
+nmap <silent><buffer> <localleader>n :s/^\(\s*\)\(>\?\s*\)/\=submatch(1) . ( submatch(2) == '' ? '> ' : '' )/
 " [s]how next actions
 nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
 " [d]o task
 nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")dd?^\S/^\S\\|^$P
+" [f]inish project
+nmap <silent><buffer> <localleader>f l?^\SI=strftime("- %Y-%m-%d ")
 " toggle always [o]pen fold
-"nmap <silent><buffer> <localleader>
+"nmap <silent><buffer> <localleader>o :silent! foldopenl?^\S:s/^\(.\{-}\)\(\s*@\?\)$/\=submatch(1) . ( submatch(2) == '' ? ' @' : '' )/
+
