@@ -19,8 +19,14 @@ syn match questionMark /[?+]/ contained
 syn match wedge /@$/ contained
 syn match doneMark /^\s*-/ contained
 
+" syn match noteBoundary /^\~\~\~.*$/ contained
+
 syn region projectFold start="^\S.*[^@]$" skip="^\s\s*" end="^" fold transparent keepend
 syn region doneFold start="^\s\s*-\s" skip="^\s\s*-\s" end="^" fold transparent
+syn region note start="^\~\~\~ .*$" end="^\~\~\~\~*$" fold 
+" contains=noteBoundary
+
+
 
 hi projectName cterm=bold gui=bold
 hi isPending ctermfg=darkgrey cterm=bold guifg=darkgrey
@@ -32,6 +38,8 @@ hi link isDate Special
 hi link doneMark Special
 hi link pendingWhat Statement
 hi link wedge PreProc
+hi link note NONE
+hi link noteBoundary Identifier
 
 hi! link Folded PreProc
 
