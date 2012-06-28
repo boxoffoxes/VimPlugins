@@ -13,7 +13,7 @@ syn match nextAction /^\s*>.*/ contains=isTag
 
 syn match isDate    /\d\d\d\d-\d\d-\d\d/
 syn match isTag /+\S\S*/
-syn match pendingWhat /?\S\S*/ contains=questionMark
+syn match pendingWhat /^?\S\S*\|\s?\S\S*/ contains=questionMark
 
 syn match questionMark /?/ contained
 syn match wedge /@$/ contained
