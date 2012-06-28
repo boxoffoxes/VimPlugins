@@ -55,14 +55,24 @@ setlocal foldminlines=3
 setlocal foldopen=block,hor,mark,percent,quickfix,tag,undo
 setlocal foldtext=BrainFoldText()
 
+map <buffer><expr> <A-space> "\u00a0"
+
 " Toggle [n]ext action
 nmap <silent><buffer> <localleader>n :s/^\(\s*\)\(>\?\s*\)/\=submatch(1) . ( submatch(2) == '' ? '> ' : '' )/
 " [s]how next actions
 nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
 " [d]o task
-nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")dd?^\S/^\S\\|^$P
+nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
 " [f]inish project
 nmap <silent><buffer> <localleader>f l?^\SI=strftime("- %Y-%m-%d ")
+" toggle task on-[h]old
+nmap <silent><buffer> <localleader>h :s/^\(\s*\)\(?\s\s*\)\?/\=submatch(1) . ( submatch(2) == '' ? '? ' : '' )/
+" [w]aiting for someone
+nmap <silent><buffer> <localleader>w :s/^\(\s*\)\(?\s\s*\)\?/\1? /a
+" no longer [W]aiting
+nmap <silent><buffer> <localleader>W :s/^\(\s*\)\(?\S*\s\s*\)\?/\1/
 " toggle always [o]pen fold
-"nmap <silent><buffer> <localleader>o :silent! foldopenl?^\S:s/^\(.\{-}\)\(\s*@\?\)$/\=submatch(1) . ( submatch(2) == '' ? ' @' : '' )/
+nmap <silent><buffer> <localleader>o :silent! foldopen^l?^\S:s/^\(.\{-}\)\(\s*@\)\?$/\=submatch(1) . ( submatch(2) == '' ? ' @' : '' )/
+" append non-breaking space (for + and ? tags)
+"nmap <buffer> <localleader><space> a="\u00a0"
 
