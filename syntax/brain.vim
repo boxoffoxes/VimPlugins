@@ -64,7 +64,7 @@ nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
 " [d]o task
 nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
 " [f]inish project
-nmap <silent><buffer> <localleader>f l?^\SI=strftime("- %Y-%m-%d ")
+nmap <silent><buffer> <localleader>f ^l?^\SI=strftime("- %Y-%m-%d "):s/\(\s*@\)\?$//
 " toggle task on-[h]old
 nmap <silent><buffer> <localleader>h :s/^\(\s*\)\(?\s\s*\)\?/\=submatch(1) . ( submatch(2) == '' ? '? ' : '' )/
 " [w]aiting for someone
