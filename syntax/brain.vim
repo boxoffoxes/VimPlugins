@@ -9,7 +9,8 @@ syn match projectName /^\S.*$/ contains=isTag,isDate,pendingWhat,wedge
 syn match isDone	/^\s*- .*$/ contains=isDate,isTag,doneMark
 syn match isPending /^\s*?.*/ contains=isTag,pendingWhat
 syn match Comment /^\s*#.*$/  contains=isTag
-syn match nextAction /^\s*>.*/ contains=isTag
+syn match nextAction /^\s*>.*/ contains=isTag,isDate,pendingWhat
+syn match isUrgent /^\s*>>>*.*/
 
 syn match isDate    /\d\d\d\d-\d\d-\d\d/
 syn match isTag /^+\S\S*\|\s+\S\S*/ contains=questionMark
@@ -40,6 +41,7 @@ hi link pendingWhat Statement
 hi link wedge PreProc
 hi link note NONE
 hi link noteBoundary Identifier
+hi link isUrgent Todo
 
 hi! link Folded PreProc
 
@@ -57,12 +59,14 @@ setlocal foldtext=BrainFoldText()
 
 map <buffer><expr> <A-space> "\u00a0"
 
+" Toggle [u]rgent action
+nmap <silent><buffer> <localleader>u :s/^\(\s*\)\(>*\s*\)/\=submatch(1) . ( submatch(2) == '>> ' ? '' : '>> ' )/
 " Toggle [n]ext action
 nmap <silent><buffer> <localleader>n :s/^\(\s*\)\(>\?\s*\)/\=submatch(1) . ( submatch(2) == '' ? '> ' : '' )/
 " [s]how next actions
 nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
 " [d]o task
-nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
+nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>*\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
 " [f]inish project
 nmap <silent><buffer> <localleader>f ^l?^\SI=strftime("- %Y-%m-%d "):s/\(\s*@\)\?$//
 " toggle task on-[h]old
