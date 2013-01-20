@@ -5,6 +5,7 @@ syn spell toplevel
 " syn case ignore
 syn sync linebreaks=1
 
+syn match isKeyword /\(if\|then\)/ contained
 syn match inProject /+\S\S*/
 syn match inContext /@\S\S*/
 syn match isDate    /\d\d\d\d-\d\d-\d\d/
@@ -16,6 +17,7 @@ syn match hasPriC   /^(C) .*/ contains=inProject,inContext,isDate
 syn match hasPriW   /^([WZ]) .*/ contains=inProject,inContext,isDate
 syn match hasPri    /^([D-VXY]) .*/ contains=inProject,inContext,isDate
 syn match isDone    /^x .*/ contains=isDate
+syn match isIfThen  /\(^if\| if\) .* then / contains=isKeyword,inProject,inContext,isDate
 
 
 hi isDone ctermfg=darkgrey guifg=grey
@@ -29,6 +31,7 @@ hi hasPriW ctermfg=darkgrey cterm=bold guifg=darkgrey
 hi link hasPri Special
 hi link isDate Type
 hi link ticker Type
+hi link isKeyword PreProc
 
 setlocal cursorline
 setlocal foldmethod=expr
