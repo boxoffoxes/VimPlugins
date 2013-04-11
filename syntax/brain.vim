@@ -12,7 +12,7 @@ syn match Comment /^\s*#.*$/  contains=isTag
 syn match nextAction /^\s*>.*/ contains=isTag,isDate,pendingWhat
 syn match isUrgent /^\s*>>>*.*/
 
-syn match isDate    /\d\d\d\d-\d\d-\d\d/
+syn match isDate    /\(first thing \(on \)\?\)\?\(\d\d\d\d-\d\d-\d\d\|Monday\|Tuesday\|Wednesday\|Thursday\|Friday\|Saturday\|Sunday\|Today\|Tomorrow\)\(\( at\)\?\( \d\?\d:\d\d\| \d[ap]m\| bedtime\| morning\| evening\)\)\?/
 syn match isTag /^+\S\S*\|\s+\S\S*/ contains=questionMark
 syn match pendingWhat /^?\S\S*\|\s?\S\S*/ contains=questionMark
 
@@ -22,7 +22,7 @@ syn match doneMark /^\s*-/ contained
 
 " syn match noteBoundary /^\~\~\~.*$/ contained
 
-syn region projectFold start="^\S.*[^@]$" skip="^\s\s*" end="^" fold transparent keepend
+syn region projectFold start="^\S.*[@]$" skip="^\s\s*" end="^" fold transparent keepend
 syn region doneFold start="^\s\s*-\s" skip="^\s\s*-\s" end="^" fold transparent
 syn region note start="^\~\~\~ .*$" end="^\~\~\~\~*$" fold 
 " contains=noteBoundary
@@ -77,6 +77,8 @@ nmap <silent><buffer> <localleader>w :s/^\(\s*\)\(?\s\s*\)\?/\1? /a
 nmap <silent><buffer> <localleader>W :s/^\(\s*\)\(?\S*\s\s*\)\?/\1/
 " toggle always [o]pen fold
 nmap <silent><buffer> <localleader>o :silent! foldopen^l?^\S:s/^\(.\{-}\)\(\s*@\)\?$/\=submatch(1) . ( submatch(2) == '' ? ' @' : '' )/
+" find items tagged for today
+nmap <silent><buffer> <localleader>t /=strftime("%Y-%m-%d") . '\\|' . strftime("%A") . '\\|today\\|tomorrow'
 " append non-breaking space (for + and ? tags)
 "nmap <buffer> <localleader><space> a="\u00a0"
 
