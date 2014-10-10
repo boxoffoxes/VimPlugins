@@ -1,6 +1,17 @@
 " Vim syntax file
 " Language:	brain.txt
 
+""" This ugly hack makes me feel unclean, but I couldn't find a better way to
+"""   do it in vimscript!
+let s:date_pattern = '/\v^(\s*)(first thing (on )?)?(\d\d\d\d-\d\d-\d\d|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Today|Tomorrow)(( at)?( \d?\d:\d\d| \d?\d[ap]m| bedtime| morning| evening| afternoon))?\s*/'
+let s:date_deleter = 'nmap <silent><buffer> <localleader>e :silent! s' . escape(s:date_pattern, '|') . '\1/'
+let s:date_matcher = 'syn match isDate ' . s:date_pattern 
+
+
+let s:today_pattern = '\v^\s*(first thing (on )?)?(' .strftime("%Y-%m-%d") . '\|' . strftime("%A") . '\|today)'
+let s:today_matcher = 'nmap <silent><buffer> <localleader>t /' . s:today_pattern . ''
+let s:today_filter  = 'nmap <silent><buffer> <localleader>T :g/' . s:today_pattern . ''
+
 syn spell toplevel
 syn case ignore
 syn sync linebreaks=1
@@ -12,7 +23,7 @@ syn match Comment /^\s*#.*$/  contains=isTag
 syn match nextAction /^\s*>.*/ contains=isTag,isDate,pendingWhat
 syn match isUrgent /^\s*>>>*.*/
 
-syn match isDate    /\(first thing \(on \)\?\)\?\(\d\d\d\d-\d\d-\d\d\|Monday\|Tuesday\|Wednesday\|Thursday\|Friday\|Saturday\|Sunday\|Today\|Tomorrow\)\(\( at\)\?\( \d\?\d:\d\d\| \d[ap]m\| bedtime\| morning\| evening\)\)\?/
+exec s:date_matcher
 syn match isTag /^+\S\S*\|\s+\S\S*/ contains=questionMark
 syn match pendingWhat /^?\S\S*\|\s?\S\S*/ contains=questionMark
 
@@ -33,7 +44,7 @@ hi projectName cterm=bold gui=bold
 hi isPending ctermfg=darkgrey cterm=bold guifg=darkgrey
 hi isDone ctermfg=darkgrey guifg=grey
 hi link questionMark isPending
-hi link isTag Type
+hi link isTag Identifier
 hi link nextAction Constant
 hi link isDate Special
 hi link doneMark Special
@@ -43,10 +54,10 @@ hi link note NONE
 hi link noteBoundary Identifier
 hi link isUrgent Todo
 
-hi! link Folded PreProc
+hi! link Folded Comment
 
 function! BrainFoldText()
-	let l = getline(v:foldstart)
+	let l = substitute(getline(v:foldstart), '\t', '    ', 'g')
 	return l . " +-" . v:folddashes
 endfunction
 
@@ -65,8 +76,13 @@ nmap <silent><buffer> <localleader>u :s/^\(\s*\)\(>*\s*\)/\=submatch(1) . ( subm
 nmap <silent><buffer> <localleader>n :s/^\(\s*\)\(>\?\s*\)/\=submatch(1) . ( submatch(2) == '' ? '> ' : '' )/
 " [s]how next actions
 nmap <buffer> <localleader>s :g/^[^# \t]\\|^\s*>
+" r[e]mvove date
+exec s:date_deleter
 " [d]o task
-nmap <silent><buffer> <localleader>d :silent! s/^\(\s*\)>*\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
+nmap <silent><buffer> <localleader>- :silent! s/^\(\s*\)>*\s*/\1/I=strftime("- %Y-%m-%d ")ddmz?^\S/^\S\\|^$P`z
+nmap <silent><buffer> <localleader>d <localleader>e<localleader>-
+" [D]o task with re-add
+nmap <silent><buffer> <localleader>D <localleader>eyyP<localleader>-
 " [f]inish project
 nmap <silent><buffer> <localleader>f ^l?^\SI=strftime("- %Y-%m-%d "):s/\(\s*@\)\?$//
 " toggle task on-[h]old
@@ -78,7 +94,9 @@ nmap <silent><buffer> <localleader>W :s/^\(\s*\)\(?\S*\s\s*\)\?/\1/
 " toggle always [o]pen fold
 nmap <silent><buffer> <localleader>o :silent! foldopen^l?^\S:s/^\(.\{-}\)\(\s*@\)\?$/\=submatch(1) . ( submatch(2) == '' ? ' @' : '' )/
 " find items tagged for today
-nmap <silent><buffer> <localleader>t /=strftime("%Y-%m-%d") . '\\|' . strftime("%A") . '\\|today\\|tomorrow'
+exec s:today_matcher
+" show only items tagged for [T]oday
+exec s:today_filter
 " append non-breaking space (for + and ? tags)
 "nmap <buffer> <localleader><space> a="\u00a0"
 

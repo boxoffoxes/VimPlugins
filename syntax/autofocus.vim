@@ -54,9 +54,9 @@ nmap <buffer> <localleader>m /^[^=\-# \t].*\*$
 " [N]ext done
 nmap <buffer> <localleader>N /^[-=] 
 " [f]inish working on task for now
-nmap <silent> <buffer> <localleader>f <localleader>W<localleader>TyyGp``I=strftime("- [%Y-%m-%d] ")<localleader>n
+nmap <silent> <buffer> <localleader>f <localleader>W<localleader>TyyGp``I=strftime("- [%Y-%m-%d %H:%M] ")<localleader>n
 " [F]inish task
-nmap <silent> <buffer> <localleader>F <localleader>W<localleader>TI=strftime("= [%Y-%m-%d] ")<localleader>n
+nmap <silent> <buffer> <localleader>F <localleader>W<localleader>TI=strftime("= [%Y-%m-%d %H:%M] ")<localleader>n
 " [c]omplete periodic task
 "nmap <silent> <buffer> <localleader>c I=strftime("+ [%Y-%m-%d]
 "")<localleader>n

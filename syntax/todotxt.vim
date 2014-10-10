@@ -24,9 +24,9 @@ hi isDone ctermfg=darkgrey guifg=grey
 hi CursorLine cterm=bold gui=bold
 hi link inProject Constant
 hi link inContext Identifier
-hi link hasPriA Todo
-hi link hasPriB Statement
-hi link hasPriC PreProc
+hi hasPriA ctermfg=red guifg=red
+hi hasPriB ctermfg=yellow guifg=yellow
+hi hasPriC ctermfg=green guifg=green
 hi hasPriW ctermfg=darkgrey cterm=bold guifg=darkgrey
 hi link hasPri Special
 hi link isDate Type
